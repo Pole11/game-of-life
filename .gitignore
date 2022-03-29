@@ -1,4 +1,5 @@
+.gitignore
 game
 game.o
 util.o
-.vscode
+./.vscode
