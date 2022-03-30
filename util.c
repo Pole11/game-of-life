@@ -140,8 +140,8 @@ void game_handler() {
     }
 
     // free the temp matrix
-    for (int i = 0; i < h; i++)
-        free(temp[i]);
+    //for (int i = 0; i < h; i++)
+    //    free(temp[i]);
     // it does not work ???
     //free(temp);
 
