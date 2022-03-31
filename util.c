@@ -14,16 +14,16 @@ int nigga(int i, int j) {
 
     for (int k = -1; k <= 1; k++) {
         for (int l = -1; l <= 1; l++) {
-            if (i + k >= 0 
-                && i + k < h 
-                && j + l >= 0 
-                && j + l < w 
-                && screen[i + k][j + l] == '*')
+            if (i + k >= 0 && 
+                i + k < h && 
+                j + l >= 0 && 
+                j + l < w &&
+                screen[i + k][j + l] == ALIVE_CHAR)
                 n++;
         }
     }
 
-    if (screen[i][j] == '*')
+    if (screen[i][j] == ALIVE_CHAR)
         return n - 1;
 
     return n;
@@ -44,16 +44,16 @@ void print_screen(void) {
     printf("\n");
 
     for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
+        for (int j = 0; j < w/2; j++) {
             // is a border
             if (j == 0)
-                printf("%c", '+');
+                printf("%c ", '+');
             if (i == cursor.y && j == cursor.x)
-                printf("%c", '@');
+                printf("%c ", CURSOR_CHAR);
             else 
-                printf("%c", screen[i][j] == '\0' ? ' ' : screen[i][j]);
+                printf("%c ", screen[i][j] == '\0' ? ' ' : screen[i][j]);
                 //printf("%c", screen[i][j] == '\0' ? ' ' : (char) nigga(i, j) + '0');
-                //printf("%c", screen[i][j] == '\0' ? nigga(i, j) + '0' : '*');
+                //printf("%c", screen[i][j] == '\0' ? nigga(i, j) + '0' : ALIVE_CHAR);
                 //printf("%d", nigga(i, j));
                 
         }
@@ -89,16 +89,16 @@ char get_input(void) {
 void input_handler(char input) {
     if (input == 'q')
         exit(0);
-    else if (input == 'w' && cursor.y > 0)
+    else if (input == UP_KEY && cursor.y > 0)
         cursor.y--;
-    else if (input == 's' && cursor.y < h - 1)
+    else if (input == DOWN_KEY && cursor.y < h - 1)
         cursor.y++;
-    else if (input == 'a' && cursor.x > 0)
+    else if (input == LEFT_KEY && cursor.x > 0)
         cursor.x--;
-    else if (input == 'd' && cursor.x < w - 1)
+    else if (input == RIGHT_KEY && cursor.x < w / 2 - 1)
         cursor.x++;
     else if (input == ' ')
-        screen[cursor.y][cursor.x] = '*'; 
+        screen[cursor.y][cursor.x] = ALIVE_CHAR; 
     else if (input == 'r')
         screen[cursor.y][cursor.x] = '\0'; 
     else if (input == 'p') {
@@ -113,7 +113,7 @@ void input_handler(char input) {
 void game_handler() {
     // build a new matrix, do not modify the current one
     // use realloc
-    char **temp = NULL;
+    static char **temp = NULL;
     temp = (char **) realloc(temp, h * sizeof(char *));
     for (int i = 0; i < h; i++)
         temp[i] = (char *) realloc(temp[i], w * sizeof(char));
@@ -123,13 +123,13 @@ void game_handler() {
         for (int i = 0; i < h; i++) {
             temp[i][j] = '\0'; // initialize the matrix
             if (screen[i][j] == '\0' && nigga(i, j) == 3)
-                temp[i][j] = '*';
-            else if (screen[i][j] == '*' && nigga(i, j) <= 1) 
+                temp[i][j] = ALIVE_CHAR;
+            else if (screen[i][j] == ALIVE_CHAR && nigga(i, j) <= 1) 
                 temp[i][j] = '\0';
-            else if (screen[i][j] == '*' && nigga(i, j) >= 4) 
+            else if (screen[i][j] == ALIVE_CHAR && nigga(i, j) >= 4) 
                 temp[i][j] = '\0';
-            else if (screen[i][j] == '*')
-                temp[i][j] = '*'; 
+            else if (screen[i][j] == ALIVE_CHAR)
+                temp[i][j] = ALIVE_CHAR; 
         }
     }
 
@@ -138,12 +138,6 @@ void game_handler() {
         for (int i = 0; i < h; i++) 
             screen[i][j] = temp[i][j];
     }
-
-    // free the temp matrix
-    //for (int i = 0; i < h; i++)
-    //    free(temp[i]);
-    // it does not work ???
-    //free(temp);
 
     return;
 }
