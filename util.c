@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "util.h"
 
 int w,
@@ -32,7 +33,7 @@ int nigga(int i, int j) {
 void resize_screen(void) {
     screen = (char **) realloc(screen, h * sizeof(char *));
     for (int i = 0; i < h; i++)
-        screen[i] = (char *) realloc(screen[i], w * sizeof(char));
+        screen[i] = (char *) realloc(screen[i], (w / 2) * sizeof(char));
 
     return;
 }
@@ -97,11 +98,11 @@ void input_handler(char input) {
         cursor.x--;
     else if (input == RIGHT_KEY && cursor.x < w / 2 - 1)
         cursor.x++;
-    else if (input == ' ')
+    else if (input == ADD_KEY)
         screen[cursor.y][cursor.x] = ALIVE_CHAR; 
-    else if (input == 'r')
+    else if (input == REMOVE_KEY)
         screen[cursor.y][cursor.x] = '\0'; 
-    else if (input == 'p') {
+    else if (input == PLAY_KEY) {
         game_handler();
         cursor.x = -1;
         cursor.y = -1;
@@ -116,10 +117,10 @@ void game_handler() {
     static char **temp = NULL;
     temp = (char **) realloc(temp, h * sizeof(char *));
     for (int i = 0; i < h; i++)
-        temp[i] = (char *) realloc(temp[i], w * sizeof(char));
+        temp[i] = (char *) realloc(temp[i], (w / 2) * sizeof(char));
 
 
-    for (int j = 0; j < w; j++) {
+    for (int j = 0; j < w/2; j++) {
         for (int i = 0; i < h; i++) {
             temp[i][j] = '\0'; // initialize the matrix
             if (screen[i][j] == '\0' && nigga(i, j) == 3)
@@ -138,6 +139,27 @@ void game_handler() {
         for (int i = 0; i < h; i++) 
             screen[i][j] = temp[i][j];
     }
+
+    return;
+}
+
+void tutorial() {
+    clear_screen();
+    printf("  ____    _    __  __ _____\n / ___|  / \\  |  \\/  | ____|\n| |  _  / _ \\ | |\\/| |  _|\n| |_| |/ ___ \\| |  | | |___\n \\____/_/   \\_\\_|  |_|_____|\n");
+    sleep(1);
+    printf("  ___  _____ \n / _ \\|  ___|\n| | | | |_\n| |_| |  _|\n \\___/|_|\n");
+    sleep(1);
+    printf(" _     ___ _____ _____ \n| |   |_ _|  ___| ____|\n| |    | || |_  |  _|\n| |___ | ||  _| | |___\n|_____|___|_|   |_____|\n");
+    sleep(1);
+    clear_screen();
+    printf("Press '%c' to go up\n", UP_KEY);
+    printf("Press '%c' to go left\n", LEFT_KEY);
+    printf("Press '%c' to go down\n", DOWN_KEY);
+    printf("Press '%c' to go right\n", RIGHT_KEY);
+    printf("Press '%c' to add\n", ADD_KEY);
+    printf("Press '%c' to go remove\n", REMOVE_KEY);
+    printf("Press '%c' to go play\n", PLAY_KEY);
+    sleep(3);
 
     return;
 }

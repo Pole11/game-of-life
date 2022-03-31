@@ -19,6 +19,8 @@ int main(void) {
 
     struct winsize win;
 
+    //tutorial();
+
     for (;;) {
         // get the size of the screen
         ioctl(1, TIOCGWINSZ, &win);

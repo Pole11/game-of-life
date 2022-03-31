@@ -7,6 +7,9 @@
 #define LEFT_KEY 'a'
 #define DOWN_KEY 's'
 #define RIGHT_KEY 'd'
+#define ADD_KEY ' '
+#define REMOVE_KEY 'r'
+#define PLAY_KEY 'p'
 #define MIN_WIDTH 12
 #define MIN_HEIGHT 12
 
@@ -27,5 +30,6 @@ void clear_screen(void);
 char get_input(void);
 void input_handler(char input);
 void game_handler();
+void tutorial();
 
 #endif
