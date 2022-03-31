@@ -19,7 +19,7 @@ int main(void) {
 
     struct winsize win;
 
-    //tutorial();
+    tutorial();
 
     for (;;) {
         // get the size of the screen
