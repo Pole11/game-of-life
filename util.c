@@ -3,11 +3,11 @@
 #include <unistd.h>
 #include "util.h"
 
-int w,
+extern int w,
     h,
     game_started;
-char **screen;
-cursor_t cursor;
+extern char **screen;
+extern cursor_t cursor;
 
 int nigga(int i, int j) {
     // returns the number of niggas around it
